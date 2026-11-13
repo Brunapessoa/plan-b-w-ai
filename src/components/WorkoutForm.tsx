@@ -13,12 +13,11 @@ function WorkoutForm() {
     });
 
     return(
-        <form>    
+        <form className="text-amber-50">    
         <fieldset>
-            <legend>Level</legend>
-
+            <legend className="px-10 py-5">Level</legend>
             {levels.map((level) => (
-                <label key={level}>
+                <label className="py-5 px-10" key={level} >
                     <input 
                         type="radio" 
                         name="level"
@@ -26,10 +25,12 @@ function WorkoutForm() {
                         checked={formData.level === level}
                         onChange={() => setFormData({...formData, level: level})}
                         />
+                    {level}
+                    
                 </label>
             ))}
         </fieldset>
-        <button type="submit">Generate Workout</button>
+        <button className="bg-mauve-500 mt-10 mx-auto px-2 py-2 rounded-md" type="submit">Generate Workout</button>
         </form>
     )
 }
