@@ -1,5 +1,6 @@
 import { useState,  } from "react";
-import type { WorkoutFormData, Goal, Level, DaysPerWeek,Equipment } from "../types";
+import type { WorkoutFormData, Goal, Level, DaysPerWeek, Equipment, WorkoutPlan } from "../types";
+import WorkoutPlanDisplay from "./WorkoutPlanDisplay";
 import type { SubmitEvent } from "react";
 
 function WorkoutForm() {
@@ -19,11 +20,33 @@ function WorkoutForm() {
         equipment: "bodyweight only",
     });
 
-    const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        console.log(formData); 
-    }
+    const [plan, setPlan] = useState<WorkoutPlan | null>(null);
 
+    const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        
+        const response = await fetch("/api/generate", {
+            method: "POST",
+            headers: { "Content-Type" : "application/json" },
+            body: JSON.stringify(formData),
+        })
+
+        const data = await response.json()
+        setPlan(data);
+    } 
+
+    if(plan) {
+        return ( 
+            <>
+                <button className="my-2 bg-mauve-500 py-1 px-2 rounded-md text-amber-50"
+                type="button"
+                onClick={() => setPlan(null)}>
+                    Back to Form
+                </button>
+                <WorkoutPlanDisplay plan={plan} />
+            </>
+        )
+    }
     return(
         <form className="text-amber-50 my-10 pb-20"
         onSubmit={handleSubmit}>  
@@ -45,14 +68,14 @@ function WorkoutForm() {
             <fieldset className="px-8 py-8 border-2 border-solid rounded-md my-10">
                 <legend className="px-4">Level</legend>
                 {levels.map((levelOption) => (
-                <label className="px-5" key={levelOption} >
+                    <label className="px-5" key={levelOption} >
                     <input className="accent-orange-400 mx-2"
                             type="radio" 
-                        name="level"
-                        value={levelOption}
-                        checked={formData.level === levelOption}
-                        onChange={() => setFormData({...formData, level: levelOption})}
-                        />
+                            name="level"
+                            value={levelOption}
+                            checked={formData.level === levelOption}
+                            onChange={() => setFormData({...formData, level: levelOption})}
+                            />
                     {levelOption}
                 </label>
                 ))}
@@ -60,7 +83,7 @@ function WorkoutForm() {
             <fieldset className="px-8 py-8 border-2 border-solid rounded-md my-10">
                 <legend className="px-4">Days per Week</legend>
                     {daysPerWeek.map((daysOption) => (
-                    <label className="px-5" key={daysOption}>
+                        <label className="px-5" key={daysOption}>
                         <input className="accent-orange-400 mx-2"
                         type="radio"
                         name="daysPerWeek"
@@ -87,7 +110,7 @@ function WorkoutForm() {
                         </label>
                     ))}
             </fieldset>
-            <button className="bg-mauve-500 mt-10 px-2 py-2 rounded-md" 
+            <button className="bg-mauve-500 my-5 px-2 py-2 rounded-md" 
             type="submit"
             >Generate Workout
             </button>
