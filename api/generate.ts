@@ -34,7 +34,6 @@ export async function POST(request: Request) {
     - In "reps", use the format "sets x reps", like "3x12".`
 
     const response = await ai.models.generateContent({
-        // model: "modelo não existe",
         model: "gemini-flash-lite-latest",
         contents: prompt,
         config: {
