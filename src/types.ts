@@ -9,3 +9,18 @@ export type WorkoutFormData = {
     daysPerWeek: DaysPerWeek;
     equipment: Equipment;
 }
+
+export type Exercise = {
+    exercise: string;
+    weights: string;
+    reps: string;
+}
+
+export type Workout = {
+    name: string;
+    exercises: Exercise[];
+}
+
+export type WorkoutPlan = {
+    workouts: Workout[]
+}
