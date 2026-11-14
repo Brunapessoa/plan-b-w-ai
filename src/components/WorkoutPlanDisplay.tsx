@@ -6,7 +6,7 @@ type WorkoutPlanDisplayProps = {
 
 function WorkoutPlanDisplay({ plan }: WorkoutPlanDisplayProps) {
     return (
-        <section className="border-2 border-amber-50 mt-2 mb-10 p-2">
+        <section className="border-2 border-amber-50 mt-5 mb-10 p-2">
             {plan.workouts.map((workout) => (
                 <div className="my-5" key={workout.name}
                 >
