@@ -1,1 +1,10 @@
-@import "tailwindcss"
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Allura";
+    src: url("/Allura-regular.ttf") format("truetype");
+}
+
+@theme {
+    --font-allura: "Allura", cursive;
+}
