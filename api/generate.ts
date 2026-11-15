@@ -33,44 +33,51 @@ export async function POST(request: Request) {
     - In "weights", suggest a starting weight in kg. Leave the field empty for bodyweight exercises.
     - In "reps", use the format "sets x reps", like "3x12".`
 
-    const response = await ai.models.generateContent({
-        model: "gemini-flash-lite-latest",
-        contents: prompt,
-        config: {
-            responseMimeType: "application/json",
-            responseJsonSchema: {
-                type: "object",
-                properties: {
-                    workouts: {
-                        type: "array",
-                        items: {
-                            type: "object",
-                            properties: {
-                                name: { type: "string" },
-                                exercises: {
-                                    type: "array",
-                                    items: {
-                                        type: "object",
-                                        properties: {
-                                            exercise: { type: "string" },
-                                            weights: { type: "string" },
-                                            reps: { type: "string" },
+    try {
+        const response = await ai.models.generateContent({
+            model: "gemini-flash-lite-latest",
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseJsonSchema: {
+                    type: "object",
+                    properties: {
+                        workouts: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    name: { type: "string" },
+                                    exercises: {
+                                        type: "array",
+                                        items: {
+                                            type: "object",
+                                            properties: {
+                                                exercise: { type: "string" },
+                                                weights: { type: "string" },
+                                                reps: { type: "string" },
+                                            },
+                                            required: ["exercise", "weights", "reps"],
                                         },
-                                        required: ["exercise", "weights", "reps"],
                                     },
                                 },
+                                required: ["name", "exercises"],
                             },
-                            required: ["name", "exercises"],
                         },
                     },
+                    required: ["workouts"],
                 },
-                required: ["workouts"],
             },
-        },
-    })
+        })
+        const plan = JSON.parse(response.text ?? "")
+        
+        return Response.json(plan)
 
-    const plan = JSON.parse(response.text ?? "")
-    
-    return Response.json(plan)
-    
+    } catch (error) {
+        console.log(error)
+        return Response.json(
+            { error: "The AI is busy now. Please try again in a moment."},
+            { status: 503 }
+        )
+    } 
 }

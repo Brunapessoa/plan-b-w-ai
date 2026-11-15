@@ -32,6 +32,8 @@ function WorkoutForm() {
         setLoading(true)
         setError("")
 
+        
+        
         try {
             const response = await fetch("/api/generate", {
                 method: "POST",
@@ -39,12 +41,14 @@ function WorkoutForm() {
                 body: JSON.stringify(formData),
             })
             
-            if (!response.ok) {
-                throw new Error()
-            }
-            
             const data = await response.json()
-            setPlan(data);
+            
+            if(!response.ok) {
+                setError(data.error)
+                return
+            }
+    
+            setPlan(data)
         }
         catch {
             setError("Something went wrong. Please try again.")
@@ -70,15 +74,15 @@ function WorkoutForm() {
         onSubmit={handleSubmit}>  
             
             {loading && (              
-                <div className="fixed inset-0 flex items-start bg-black/30 font-bold">
-                    <p className="w-full text-center text-2xl text-amber-50 bolder mt-60">
+                <div className="fixed inset-0 flex items-center bg-white/10 font-bold">
+                    <p className="w-full text-center text-2xl bg-black/70 text-amber-50 font-bold mx-40 py-40 rounded-2xl">
                         Generating your workout...
                     </p>
                 </div>
             )}
 
             {error && (
-                <div className="flex flex-col bg-black/80 fixed inset-0 items-center justify-center my-80 mx-40 rounded-2xl">
+                <div className="flex flex-col bg-black/80 fixed inset-0 items-center justify-center my-80 mx-40 px-4 rounded-2xl">
                     <p className=" text-center text-2xl text-amber-50 font-bold">{error}</p>
                     <button className="mt-4 bg-mauve-500 px-4 py-2 rounded-md text-amber-50"
                     type="button"
