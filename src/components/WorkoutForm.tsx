@@ -84,7 +84,7 @@ function WorkoutForm() {
             {error && (
                 <div className="fixed inset-0 flex items-center justify-center px-5 bg-white/30">
                     <div className="w-full max-w-sm py-10 px-6 flex flex-col items-center gap-6 bg-black/80 rounded-2xl">
-                        <p className=" text-center text-2xl text-amber-50 font-bold">{error}</p>
+                        <p className=" text-center text-2xl text-zinc-50 font-bold">{error}</p>
                         <button className="block mx-auto bg-zinc-500 border-2 border-zinc-700 px-6 py-3 rounded-md hover:bg-zinc-700 active:bg-zinc-700 cursor-pointer"
                         type="button"
                         onClick={() => setError("")}
