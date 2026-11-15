@@ -12,6 +12,9 @@ function App() {
       <main className="max-w-3xl mx-auto">
         <WorkoutForm />
       </main>
+      <footer className="py-1 text-center text-sm text-zinc-500 bg-zinc-700/40 text-shadow-md">
+      Developed by Bruna Pessoa
+    </footer>
     </>
   )
 }

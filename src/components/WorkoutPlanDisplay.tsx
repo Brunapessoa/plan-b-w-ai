@@ -6,18 +6,29 @@ type WorkoutPlanDisplayProps = {
 
 function WorkoutPlanDisplay({ plan }: WorkoutPlanDisplayProps) {
     return (
-        <section className="border-2 border-amber-50 mt-5 mb-10 p-2">
+        <section className="mt-5 mb-10 px-6">
             {plan.workouts.map((workout) => (
-                <div className="my-5" key={workout.name}
+                <div className="my-15" key={workout.name}
                 >
-                    <h2 className="text-amber-100">{workout.name}</h2>
-                    <ul className="text-amber-50">
+                    <h2 className="text-zinc-100 text-lg font-bold py-2">{workout.name}</h2>
+                    <table className="w-full text-center text-zinc-100 border border-zinc-600 border-collapse">
+                        <thead className="bg-zinc-700">
+                            <tr>
+                                <th className="py-1 px-2">Exercise</th>
+                                <th className="py-1 px-2">Weights</th>
+                                <th className="py-1 px-2">Reps</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         {workout.exercises.map((exercise) => (
-                            <li className="border text-center py-2" key={exercise.exercise}>
-                                {exercise.exercise} | {exercise.weights} | {exercise.reps}
-                            </li>
+                            <tr className="even:bg-zinc-800" key={exercise.exercise}>
+                                <td className="py-1 px-2">{exercise.exercise}</td>
+                                <td className="py-1 px-2">{exercise.weights}</td>
+                                <td className="py-1 px-2">{exercise.reps}</td>
+                            </tr>
                         ))}
-                    </ul>
+                        </tbody>
+                    </table>
                 </div>
             ))}
         </section>
