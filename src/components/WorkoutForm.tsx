@@ -60,7 +60,7 @@ function WorkoutForm() {
     if(plan) {
         return ( 
             <>
-                <button className="my-2 bg-mauve-500 py-1 px-2 rounded-md text-amber-50"
+                <button className="block mx-auto bg-zinc-500 border boder-2 border-zinc-700 px-6 py-3 rounded-md hover:bg-zinc-700 active:bg-zinc-700 cursor-pointer text-zinc-200 my-8"
                 type="button"
                 onClick={() => setPlan(null)}>
                     Back to Form
@@ -70,48 +70,53 @@ function WorkoutForm() {
         )
     }
     return(
-        <form className="text-amber-50 my-10 pb-20"
+        <form className="text-zinc-200 my-10 pb-10"
         onSubmit={handleSubmit}>  
             
             {loading && (              
-                <div className="fixed inset-0 flex items-center bg-white/10 font-bold">
-                    <p className="w-full text-center text-2xl bg-black/70 text-amber-50 font-bold mx-40 py-40 rounded-2xl">
+                <div className="fixed inset-0 flex items-center justify-center bg-white/30 font-bold">
+                    <p className="w-full max-w-sm py-10 text-center text-2xl bg-black/80 text-zinc-100 font-bold rounded-2xl">
                         Generating your workout...
                     </p>
                 </div>
             )}
 
             {error && (
-                <div className="flex flex-col bg-black/80 fixed inset-0 items-center justify-center my-80 mx-40 px-4 rounded-2xl">
-                    <p className=" text-center text-2xl text-amber-50 font-bold">{error}</p>
-                    <button className="mt-4 bg-mauve-500 px-4 py-2 rounded-md text-amber-50"
-                    type="button"
-                    onClick={() => setError("")}
-                    >Try again
-                    </button>
+                <div className="fixed inset-0 flex items-center justify-center px-5 bg-white/30">
+                    <div className="w-full max-w-sm py-10 px-6 flex flex-col items-center gap-6 bg-black/80 rounded-2xl">
+                        <p className=" text-center text-2xl text-amber-50 font-bold">{error}</p>
+                        <button className="block mx-auto bg-zinc-500 border-2 border-zinc-700 px-6 py-3 rounded-md hover:bg-zinc-700 active:bg-zinc-700 cursor-pointer"
+                        type="button"
+                        onClick={() => setError("")}
+                        >Try again
+                        </button>
+                    </div>
                 </div>
             )}
 
-            <fieldset className="px-8 py-8 border-2 border-solid rounded-md my-10">
+            <fieldset className="px-8 py-8 border-2 border-solid border-zinc-600 rounded-md my-10 mx-5">
                 <legend className="px-4">Goal</legend>
-                {goals.map((goalOption) => (
-                    <label className="px-5" key={goalOption}>
-                        <input className="accent-orange-400 mx-2" 
-                            type="radio"
-                            name="goal"
-                            value={goalOption}
-                            checked={formData.goal === goalOption}
-                            onChange={() => setFormData({...formData, goal: goalOption})}
-                            />
-                        {goalOption}
-                    </label>
-                    ))}
+                    <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-x-8">
+                        {goals.map((goalOption) => (
+                            <label className="flex items-center gap-2" key={goalOption}>
+                                <input className="accent-orange-400" 
+                                    type="radio"
+                                    name="goal"
+                                    value={goalOption}
+                                    checked={formData.goal === goalOption}
+                                    onChange={() => setFormData({...formData, goal: goalOption})}
+                                    />
+                                {goalOption}
+                            </label>
+                            ))}
+                    </div>
             </fieldset>
-            <fieldset className="px-8 py-8 border-2 border-solid rounded-md my-10">
+            <fieldset className="px-8 py-8 border-2 border-solid border-zinc-600 rounded-md my-10 mx-5">
                 <legend className="px-4">Level</legend>
+                <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-x-8">
                 {levels.map((levelOption) => (
-                    <label className="px-5" key={levelOption} >
-                    <input className="accent-orange-400 mx-2"
+                    <label className="flex items-center gap-2" key={levelOption} >
+                    <input className="accent-orange-400"
                             type="radio" 
                             name="level"
                             value={levelOption}
@@ -121,12 +126,14 @@ function WorkoutForm() {
                     {levelOption}
                 </label>
                 ))}
+                </div>
             </fieldset>
-            <fieldset className="px-8 py-8 border-2 border-solid rounded-md my-10">
+            <fieldset className="px-8 py-8 border-2 border-solid border-zinc-600 rounded-md my-10 mx-5">
                 <legend className="px-4">Days per Week</legend>
+                    <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-x-8">
                     {daysPerWeek.map((daysOption) => (
-                        <label className="px-5" key={daysOption}>
-                        <input className="accent-orange-400 mx-2"
+                        <label className="flex items-center gap-2" key={daysOption}>
+                        <input className="accent-orange-400"
                         type="radio"
                         name="daysPerWeek"
                         value={daysOption}
@@ -136,12 +143,14 @@ function WorkoutForm() {
                         {daysOption}
                     </label>
                     ))}
+                    </div>
             </fieldset>
-            <fieldset className="px-8 py-8 border-2 border-solid rounded-md my-10">
+            <fieldset className="px-8 py-8 border-2 border-solid border-zinc-600 rounded-md my-10 mx-5">
                 <legend className="px-4">Equipment</legend>
+                    <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-x-8">
                     {equipments.map((equipmentOption) => (
-                        <label className="px-5" key={equipmentOption}>
-                            <input className="accent-orange-400 mx-2"
+                        <label className="flex items-center gap-2" key={equipmentOption}>
+                            <input className="accent-orange-400"
                             type="radio" 
                             name="equipment"
                             value={equipmentOption}
@@ -151,8 +160,9 @@ function WorkoutForm() {
                             {equipmentOption}
                         </label>
                     ))}
+                    </div>
             </fieldset>
-            <button className="bg-mauve-500 my-5 px-2 py-2 rounded-md" 
+            <button className="block mx-auto bg-zinc-500 border boder-2 border-zinc-700 px-6 py-3 rounded-md hover:bg-zinc-700 active:bg-zinc-700 cursor-pointer" 
             type="submit"
             disabled={loading}
             >Generate Workout
