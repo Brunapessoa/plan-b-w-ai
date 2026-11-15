@@ -74,21 +74,23 @@ function WorkoutForm() {
         onSubmit={handleSubmit}>  
             
             {loading && (              
-                <div className="fixed inset-0 flex items-center bg-white/10 font-bold">
-                    <p className="w-full text-center text-2xl bg-black/70 text-amber-50 font-bold mx-40 py-40 rounded-2xl">
+                <div className="fixed inset-0 flex items-center justify-center bg-white/30 font-bold">
+                    <p className="w-full max-w-sm py-10 text-center text-2xl bg-black/80 text-zinc-100 font-bold rounded-2xl">
                         Generating your workout...
                     </p>
                 </div>
             )}
 
             {error && (
-                <div className="flex flex-col bg-black/80 fixed inset-0 items-center justify-center my-80 mx-40 px-4 rounded-2xl">
-                    <p className=" text-center text-2xl text-amber-50 font-bold">{error}</p>
-                    <button className="block mx-auto bg-zinc-500 border boder-2 border-zinc-700 px-6 py-3 rounded-md hover:bg-zinc-700 active:bg-zinc-700 cursor-pointer"
-                    type="button"
-                    onClick={() => setError("")}
-                    >Try again
-                    </button>
+                <div className="fixed inset-0 flex items-center justify-center px-5 bg-white/30">
+                    <div className="w-full max-w-sm py-10 px-6 flex flex-col items-center gap-6 bg-black/80 rounded-2xl">
+                        <p className=" text-center text-2xl text-amber-50 font-bold">{error}</p>
+                        <button className="block mx-auto bg-zinc-500 border-2 border-zinc-700 px-6 py-3 rounded-md hover:bg-zinc-700 active:bg-zinc-700 cursor-pointer"
+                        type="button"
+                        onClick={() => setError("")}
+                        >Try again
+                        </button>
+                    </div>
                 </div>
             )}
 
