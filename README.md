@@ -1,75 +1,88 @@
-# React + TypeScript + Vite
+# Plan B with AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> An AI-powered workout generator that creates personalized training plans in the same format as [Plan B Training](https://github.com/Brunapessoa/b-plan-training).
 
-Currently, two official plugins are available:
+**Live demo:** https://plan-b-w-ai.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Plan B with AI** generates a weekly workout plan from four choices: goal, fitness level, training days per week and available equipment. The plan comes from Google's Gemini model and is shown as one table per workout, with exercise, suggested weight and reps.
 
-## Expanding the ESLint configuration
+The output uses the same `{ exercise, weights, reps }` structure as Plan B Training, my offline workout planner, so a generated plan can later be sent to that app.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Form with goal, level, days per week and equipment
+- One workout per training day, each with a descriptive name (e.g. "Upper body", "Full body A")
+- Exercise details such as rest time, duration or intensity, when relevant
+- Suggested starting weights in kg
+- Loading overlay while the plan is being generated
+- Clear error messages, including when the AI service is busy
+- Responsive, mobile-first layout
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## How It Works
 
 ```
+Form (React)  →  POST /api/generate  →  Serverless function  →  Gemini API
+                                                 ↓
+Table (React)  ←  JSON workout plan  ←──────────┘
+```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+1. The user picks the options and submits the form. The frontend sends them to `/api/generate`.
+2. A Vercel serverless function validates the input. Only the values offered in the form are accepted.
+3. The function builds the prompt and calls Gemini. It uses a JSON schema, so the response always follows the expected structure.
+4. The function parses the response and returns the workout plan as JSON. The frontend then renders it in tables.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**Why a backend?** The Gemini API key must stay secret. Anything that runs in the browser can be read by anyone, so the key lives only in the serverless function's environment variables. The browser only talks to `/api/generate` and never sees the key.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## Tech Stack
+
+| Layer    | Technology                                      |
+|----------|-------------------------------------------------|
+| Frontend | React 19, TypeScript, Vite                      |
+| Styling  | Tailwind CSS v4                                 |
+| Backend  | Vercel Serverless Functions                     |
+| AI       | Google Gemini API (`@google/genai`), JSON output |
+| Hosting  | Vercel                                          |
+
+---
+
+## Running Locally
+
+You need a Gemini API key (free at [Google AI Studio](https://aistudio.google.com)) and the [Vercel CLI](https://vercel.com/docs/cli).
+
+```bash
+git clone https://github.com/Brunapessoa/plan-b-w-ai.git
+cd plan-b-w-ai
+npm install
+```
+
+Create a `.env` file in the project root:
 
 ```
+GEMINI_API_KEY=your_key_here
+```
+
+Start the frontend and the API together:
+
+```bash
+vercel dev
+```
+
+Then open http://localhost:3000.
+
+> `npm run dev` starts only the frontend. Use `vercel dev` so `/api/generate` works locally.
+
+---
+
+## Related Project
+
+[Plan B Training](https://github.com/Brunapessoa/b-plan-training): a lightweight, offline-first workout planner built with vanilla JavaScript.
